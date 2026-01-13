@@ -43,8 +43,10 @@ With Serena, we provide direct, out-of-the-box support for:
 * **Lua**
 * **Markdown**  
   (must be explicitly specified via `--language markdown` when generating project config, primarily useful for documentation-heavy projects)
-* **Nix**  
+* **Nix**
   (requires nixd installation)
+* **OCaml**
+  (requires OPAM and ocaml-lsp-server; cross-file references require OCaml 5.2+ and ocaml-lsp-server >= 1.23.0; see [setup guide](../03-special-guides/ocaml-setup.md))
 * **Perl**  
   (requires installation of Perl::LanguageServer)
 * **PHP**  
