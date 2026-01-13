@@ -9,11 +9,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `uv run poe type-check` - Run mypy type checking - ONLY allowed type checking command  
 - `uv run poe test` - Run tests with default markers (excludes java/rust by default)
 - `uv run poe test -m "python or go"` - Run specific language tests
+- `uv run poe test -m vue` - Run Vue tests
 - `uv run poe lint` - Check code style without fixing
 
 **Test Markers:**
 Available pytest markers for selective testing:
-- `python`, `go`, `java`, `rust`, `typescript`, `php`, `csharp`, `elixir`, `terraform`, `clojure`, `swift`, `bash`, `ruby`, `ruby_solargraph`
+- `python`, `go`, `java`, `rust`, `typescript`, `vue`, `php`, `perl`, `powershell`, `csharp`, `elixir`, `terraform`, `clojure`, `swift`, `bash`, `ruby`, `ruby_solargraph`
 - `snapshot` - for symbolic editing operation tests
 
 **Project Management:**
@@ -58,6 +59,32 @@ Each supported language has:
 3. **Test Repository** in `test/resources/repos/<language>/`
 4. **Test Suite** in `test/solidlsp/<language>/`
 
+#### OCaml Language Server Requirements
+**Important**: OCaml support has specific version requirements:
+- **OCaml version**: < 5.1 OR >= 5.1.1 (OCaml 5.1.0 is NOT supported by ocaml-lsp-server)
+- **Recommended versions**: OCaml 4.14.x (stable) or OCaml 5.1.1+ (latest)
+- **OPAM must be installed** and properly configured
+- **Installation**: `opam install ocaml-lsp-server dune`
+
+**Creating a compatible opam switch**:
+```bash
+# For stable OCaml 4.14.x
+opam switch create serena-ocaml ocaml-base-compiler.4.14.2
+eval $(opam env)
+opam install ocaml-lsp-server dune
+
+# For latest OCaml 5.1.1+
+opam switch create serena-ocaml ocaml-base-compiler.5.1.1
+eval $(opam env)
+opam install ocaml-lsp-server dune
+```
+
+**Troubleshooting**: If OCaml tests fail with "ocaml-lsp-server not found", check:
+1. Current opam switch: `opam switch show`
+2. OCaml version: `ocaml -version` 
+3. LSP server installation: `opam list -i ocaml-lsp-server`
+4. Environment activation: `eval $(opam env)`
+
 ### Memory & Knowledge System
 
 - **Markdown-based storage** in `.serena/memories/` directories
@@ -100,7 +127,7 @@ Configuration is loaded from (in order of precedence):
 - **Symbol-based editing** - Uses LSP for precise code manipulation
 - **Caching strategy** - Reduces language server overhead
 - **Error recovery** - Automatic language server restart on crashes
-- **Multi-language support** - 16+ languages with LSP integration
+- **Multi-language support** - 19 languages with LSP integration (including Vue)
 - **MCP protocol** - Exposes tools to AI agents via Model Context Protocol
 - **Async operation** - Non-blocking language server interactions
 
